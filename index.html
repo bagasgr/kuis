@@ -3,61 +3,367 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Kuis JavaScript Dasar</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <title>Aplikasi Kuis</title>
   <style>
-    /* CSS disisipkan sebelumnya tetap sama seperti yang kamu kirim */
-    /* ... (dari <style> hingga animasi slideIn) */
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f0f0f0; }
+    .hidden { display: none; }
+    .container { background: white; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+    .question { font-weight: bold; }
+    .option { margin: 10px 0; }
+    .feedback { font-weight: bold; margin: 10px 0; }
+    .winner { color: green; font-weight: bold; }
+    #waitingList { margin-top: 10px; }
+    body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(45deg, #6a11cb, #2575fc);
+    margin: 0;
+    padding: 0;
+    color: #fff;
+  }
+
+  .container {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    max-width: 700px;
+    margin: auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  h2 {
+    color: #333;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  input, select, button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin: 10px 0;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  input:focus, select:focus, button:focus {
+    outline: none;
+    border-color: #2575fc;
+  }
+
+  button {
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  button:hover {
+    background-color: #6a11cb;
+  }
+
+  .question {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .option {
+    display: block;
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #555;
+    cursor: pointer;
+  }
+
+  .option input {
+    margin-right: 10px;
+  }
+
+  #timerText {
+    font-size: 1.2rem;
+    margin-top: 10px;
+  }
+
+  #waitingList {
+    margin-top: 20px;
+    color: #555;
+  }
+
+  .feedback {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+
+  .winner {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.3rem;
+  }
+
+  #resultSection {
+    margin-top: 30px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  /* Additional styles for the quiz sections */
+  #quizSection {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  #resultSection {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  #scoreList, #winnerList {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  #scoreList li, #winnerList li {
+    margin: 10px 0;
+    font-size: 1.2rem;
+    color: #333;
+  }
+
+  #scoreList li {
+    color: #555;
+  }
+
+  #winnerList li {
+    color: #28a745;
+    font-weight: bold;
+  }
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(45deg, #ff6a00, #ee0979);
+    margin: 0;
+    padding: 0;
+    color: #fff;
+  }
+
+  .container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 25px;
+    max-width: 700px;
+    margin: 50px auto;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+
+  h2 {
+    color: #333;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  input, select, button {
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    margin: 15px 0;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #f1f1f1;
+    color: #333;
+  }
+
+  input:focus, select:focus, button:focus {
+    outline: none;
+    border: 2px solid #ff6a00;
+    box-shadow: 0 0 10px rgba(255, 106, 0, 0.5);
+  }
+
+  button {
+    background-color: #ff6a00;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+  }
+
+  button:hover {
+    background-color: #ee0979;
+    transform: scale(1.05);
+  }
+
+  .question {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  .option {
+    display: block;
+    margin: 12px 0;
+    font-size: 1.3rem;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .option:hover {
+    color: #ff6a00;
+    transform: scale(1.05);
+  }
+
+  .option input {
+    margin-right: 10px;
+  }
+
+  #timerText {
+    font-size: 1.5rem;
+    margin-top: 10px;
+  }
+
+  #waitingList {
+    margin-top: 20px;
+    color: #555;
+  }
+
+  .feedback {
+    margin-top: 15px;
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  .winner {
+    color: #28a745;
+    font-weight: bold;
+    font-size: 1.4rem;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  #resultSection {
+    margin-top: 30px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  #quizSection {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+  }
+
+  #scoreList, #winnerList {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  #scoreList li, #winnerList li {
+    margin: 10px 0;
+    font-size: 1.3rem;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+
+  #scoreList li {
+    color: #555;
+  }
+
+  #winnerList li {
+    color: #28a745;
+    font-weight: bold;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  #scoreList li:hover, #winnerList li:hover {
+    transform: scale(1.05);
+  }
+
+  /* Responsive Design */
+  @media screen and (max-width: 768px) {
+    .container {
+      padding: 20px;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+
+    .question {
+      font-size: 1.4rem;
+    }
+
+    .option {
+      font-size: 1.1rem;
+    }
+
+    #timerText {
+      font-size: 1.3rem;
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 12px;
+    }
+  }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="start-screen">
-      <h1><i class="fa-solid fa-lightbulb"></i> Selamat Datang di Kuis JavaScript</h1>
-      <button id="admin-btn"><i class="fa-solid fa-user-shield"></i> Masuk sebagai Admin</button>
-      <button id="peserta-btn"><i class="fa-solid fa-user"></i> Masuk sebagai Peserta</button>
+    <div id="startSection">
+      <h2>Selamat Datang di Kuis!</h2>
+      <input type="text" id="nameInput" placeholder="Masukkan nama Anda" />
+      <select id="roleSelect">
+        <option value="peserta">Peserta</option>
+        <option value="admin">Admin</option>
+      </select>
+      <button onclick="joinQuiz()">Gabung</button>
+
+      <div id="adminPanel" class="hidden">
+        <h4>Peserta di Ruang Tunggu:</h4>
+        <ul id="waitingNames"></ul>
+        <button onclick="startQuizForAll()">Mulai Kuis</button>
+      </div>
     </div>
 
-    <div class="waiting-room hidden">
-      <h2><i class="fa-solid fa-clock"></i> Ruang Tunggu Peserta</h2>
-      <p>Menunggu admin memulai kuis...</p>
-      <ul id="participant-list"></ul>
+    <div id="quizSection" class="hidden">
+      <div id="questionContainer">
+        <p class="question" id="questionText"></p>
+        <div id="optionsContainer"></div>
+        <p id="timerText">Sisa waktu: <span id="time">60</span> detik</p>
+        <button onclick="submitAnswer()">Kirim Jawaban</button>
+        <p id="feedback" class="feedback"></p>
+      </div>
     </div>
 
-    <div class="admin-screen hidden">
-      <h2><i class="fa-solid fa-gear"></i> Admin - Kontrol Kuis</h2>
-      <button id="start-quiz-btn"><i class="fa-solid fa-play"></i> Mulai Kuis</button>
-      <h3>Peserta Terdaftar:</h3>
-      <ul id="admin-participant-list"></ul>
-    </div>
-
-    <div class="quiz-screen hidden">
-      <h2 id="question-text"><i class="fa-solid fa-circle-question"></i> Pertanyaan Akan Ditampilkan</h2>
-      <ul id="answer-options"></ul>
-      <div id="timer"><i class="fa-solid fa-hourglass-half"></i> Sisa Waktu: <span id="time-remaining">60</span> detik</div>
-      <button id="submit-answer-btn"><i class="fa-solid fa-paper-plane"></i> Kirim Jawaban</button>
-    </div>
-
-    <div class="feedback-screen hidden">
-      <h2 id="feedback-text"></h2>
-      <button id="next-question-btn"><i class="fa-solid fa-forward"></i> Lanjut</button>
-    </div>
-
-    <div class="results-screen hidden">
-      <h2><i class="fa-solid fa-chart-line"></i> Hasil Akhir</h2>
-      <div id="results"></div>
+    <div id="resultSection" class="hidden">
+      <h3>Hasil Kuis:</h3>
+      <ul id="scoreList"></ul>
+      <h3>Juara:</h3>
+      <ul id="winnerList"></ul>
     </div>
   </div>
 
   <script>
-    let participants = [];
-    let currentParticipantIndex = 0;
-    let currentQuestionIndex = 0;
-    let selectedAnswer = null;
-    let timer;
-    let timeRemaining = 60;
-
     const questions = [
       {
         question: "Apa itu JavaScript?",
@@ -76,118 +382,178 @@
       },
       {
         question: "Tipe data mana yang bukan termasuk primitive?",
-        options: ["String", "Number", "Object", "Boolean"],
-        answer: 2
-      },
-      {
-        question: "Apa yang dimaksud dengan 'function' di JavaScript?",
-        options: ["Tipe data", "Struktur kontrol", "Blok kode untuk melakukan tugas tertentu", "Perintah perulangan"],
+        options: ["Number", "String", "Object", "Boolean"],
         answer: 2
       }
     ];
 
-    const startScreen = document.querySelector(".start-screen");
-    const adminScreen = document.querySelector(".admin-screen");
-    const waitingRoom = document.querySelector(".waiting-room");
-    const quizScreen = document.querySelector(".quiz-screen");
-    const feedbackScreen = document.querySelector(".feedback-screen");
-    const resultsScreen = document.querySelector(".results-screen");
-    const questionText = document.getElementById("question-text");
-    const answerOptions = document.getElementById("answer-options");
-    const timeRemainingSpan = document.getElementById("time-remaining");
-    const participantList = document.getElementById("participant-list");
-    const adminParticipantList = document.getElementById("admin-participant-list");
-    const results = document.getElementById("results");
+    let participants = [];
+    let currentParticipant = null;
+    let currentQuestionIndex = 0;
+    let selectedAnswer = null;
+    let timer;
+    let timeRemaining = 60;
+    let quizStarted = false;
 
-    document.getElementById("admin-btn").addEventListener("click", () => {
-      startScreen.classList.add("hidden");
-      adminScreen.classList.remove("hidden");
-    });
+    function joinQuiz() {
+      const name = document.getElementById("nameInput").value.trim();
+      const role = document.getElementById("roleSelect").value;
 
-    document.getElementById("peserta-btn").addEventListener("click", () => {
-      const name = prompt("Masukkan nama Anda:");
-      if (name) {
-        participants.push({ name: name, score: 0 });
-        const li = document.createElement("li");
-        li.textContent = name;
-        participantList.appendChild(li);
-        adminParticipantList.appendChild(li.cloneNode(true));
-        startScreen.classList.add("hidden");
-        waitingRoom.classList.remove("hidden");
+      if (!name) {
+        alert("Nama tidak boleh kosong!");
+        return;
       }
-    });
 
-    document.getElementById("start-quiz-btn").addEventListener("click", () => {
-      adminScreen.classList.add("hidden");
-      waitingRoom.classList.add("hidden");
-      quizScreen.classList.remove("hidden");
-      showQuestion();
-    });
-
-    document.getElementById("submit-answer-btn").addEventListener("click", () => {
-      if (selectedAnswer !== null) {
-        const correctAnswer = questions[currentQuestionIndex].answer;
-        const feedbackText = document.getElementById("feedback-text");
-        if (selectedAnswer === correctAnswer) {
-          participants[currentParticipantIndex].score++;
-          feedbackText.textContent = "Jawaban Benar!";
-        } else {
-          feedbackText.textContent = `Jawaban Salah. Jawaban yang benar: ${questions[currentQuestionIndex].options[correctAnswer]}`;
-        }
-        quizScreen.classList.add("hidden");
-        feedbackScreen.classList.remove("hidden");
-        clearInterval(timer);
+      if (participants.find(p => p.name === name)) {
+        alert("Nama sudah digunakan!");
+        return;
       }
-    });
 
-    document.getElementById("next-question-btn").addEventListener("click", () => {
-      currentQuestionIndex++;
-      if (currentQuestionIndex < questions.length) {
-        quizScreen.classList.remove("hidden");
-        feedbackScreen.classList.add("hidden");
-        showQuestion();
+      const participant = {
+        name,
+        role,
+        answers: [],
+        score: 0,
+        finished: false
+      };
+
+      participants.push(participant);
+
+      if (role === "admin") {
+        document.getElementById("adminPanel").classList.remove("hidden");
+        updateWaitingList();
       } else {
-        feedbackScreen.classList.add("hidden");
-        resultsScreen.classList.remove("hidden");
-        showResults();
+        currentParticipant = participant;
+        document.getElementById("startSection").classList.add("hidden");
+        if (quizStarted) {
+          startQuiz();
+        } else {
+          // Peserta menunggu kuis dimulai oleh admin
+          document.getElementById("startSection").innerHTML = "<h3>Menunggu Admin Memulai Kuis...</h3>";
+        }
       }
-    });
+    }
 
-    function showQuestion() {
-      const q = questions[currentQuestionIndex];
-      questionText.textContent = q.question;
-      answerOptions.innerHTML = "";
-      selectedAnswer = null;
-
-      q.options.forEach((option, index) => {
+    function updateWaitingList() {
+      const list = document.getElementById("waitingNames");
+      list.innerHTML = "";
+      participants.filter(p => p.role === "peserta").forEach(p => {
         const li = document.createElement("li");
-        li.textContent = option;
-        li.addEventListener("click", () => {
-          selectedAnswer = index;
-          [...answerOptions.children].forEach(child => child.style.background = "rgba(255,255,255,0.15)");
-          li.style.background = "rgba(255,255,255,0.4)";
-        });
-        answerOptions.appendChild(li);
+        li.textContent = p.name;
+        list.appendChild(li);
+      });
+    }
+
+    function startQuizForAll() {
+      quizStarted = true;
+      alert("Kuis dimulai! Semua peserta dapat mulai mengerjakan.");
+    }
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      selectedAnswer = null;
+      document.getElementById("quizSection").classList.remove("hidden");
+      startQuestion();
+    }
+
+    function startQuestion() {
+      selectedAnswer = null;
+      document.getElementById("feedback").textContent = "";
+
+      const q = questions[currentQuestionIndex];
+      document.getElementById("questionText").textContent = q.question;
+
+      const optionsContainer = document.getElementById("optionsContainer");
+      optionsContainer.innerHTML = "";
+      q.options.forEach((opt, idx) => {
+        const label = document.createElement("label");
+        label.classList.add("option");
+        label.innerHTML = `<input type="radio" name="option" value="${idx}" onclick="selectAnswer(${idx})"> ${opt}`;
+        optionsContainer.appendChild(label);
       });
 
       timeRemaining = 60;
-      timeRemainingSpan.textContent = timeRemaining;
-      timer = setInterval(() => {
-        timeRemaining--;
-        timeRemainingSpan.textContent = timeRemaining;
-        if (timeRemaining <= 0) {
-          clearInterval(timer);
-          document.getElementById("submit-answer-btn").click();
+      document.getElementById("time").textContent = timeRemaining;
+      timer = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      timeRemaining--;
+      document.getElementById("time").textContent = timeRemaining;
+      if (timeRemaining <= 0) {
+        clearInterval(timer);
+        submitAnswer(true);
+      }
+    }
+
+    function selectAnswer(index) {
+      selectedAnswer = index;
+    }
+
+    function submitAnswer(isTimeout = false) {
+      clearInterval(timer);
+
+      const correctAnswer = questions[currentQuestionIndex].answer;
+      const feedback = document.getElementById("feedback");
+
+      if (selectedAnswer === null) {
+        feedback.textContent = "Tidak menjawab. Jawaban yang benar: " + questions[currentQuestionIndex].options[correctAnswer];
+      } else if (selectedAnswer === correctAnswer) {
+        feedback.textContent = "Benar!";
+        currentParticipant.score++;
+      } else {
+        feedback.textContent = "Salah. Jawaban yang benar: " + questions[currentQuestionIndex].options[correctAnswer];
+      }
+
+      currentParticipant.answers.push(selectedAnswer);
+
+      setTimeout(() => {
+        currentQuestionIndex++;
+        if (currentQuestionIndex < questions.length) {
+          startQuestion();
+        } else {
+          finishQuiz();
         }
-      }, 1000);
+      }, 3000);
+    }
+
+    function finishQuiz() {
+      currentParticipant.finished = true;
+      document.getElementById("quizSection").classList.add("hidden");
+      document.getElementById("startSection").innerHTML = "<h3>Terima kasih telah menyelesaikan kuis.</h3>";
+
+      const allFinished = participants
+        .filter(p => p.role === "peserta")
+        .every(p => p.finished);
+
+      if (allFinished) {
+        showResults();
+      }
     }
 
     function showResults() {
-      results.innerHTML = "";
+      document.getElementById("resultSection").classList.remove("hidden");
+
+      const scoreList = document.getElementById("scoreList");
+      scoreList.innerHTML = "";
       participants.forEach(p => {
-        const div = document.createElement("div");
-        div.textContent = `${p.name}: ${p.score} poin`;
-        results.appendChild(div);
+        if (p.role === "peserta") {
+          const li = document.createElement("li");
+          li.textContent = `${p.name} - Skor: ${p.score}`;
+          scoreList.appendChild(li);
+        }
+      });
+
+      const maxScore = Math.max(...participants.map(p => p.score));
+      const winners = participants.filter(p => p.score === maxScore && p.role === "peserta");
+
+      const winnerList = document.getElementById("winnerList");
+      winnerList.innerHTML = "";
+      winners.forEach(w => {
+        const li = document.createElement("li");
+        li.classList.add("winner");
+        li.textContent = `${w.name} - Skor: ${w.score}`;
+        winnerList.appendChild(li);
       });
     }
   </script>
