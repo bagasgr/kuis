@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuis JavaScript Dasar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* Reset dan Font */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #4a00e0, #8e2de2);
+      color: white;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 2s ease-in-out;
+      overflow: hidden;
+    }
+    
+    /* Container Utama */
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 40px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+      animation: slideIn 1.5s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    
+    .container:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Header */
+    .container h1, 
+    .container h2, 
+    .container h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+      color: #fff;
+      animation: pop 1s ease;
+    }
+    
+    /* Tombol Umum */
+    button {
+      padding: 14px;
+      border: none;
+      border-radius: 12px;
+      background-image: linear-gradient(45deg, #3a7bd5, #00d2ff);
+      color: white;
+      font-size: 17px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      margin-top: 10px;
+    }
+    
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 18px rgba(0, 210, 255, 0.8);
+    }
+    
+    /* Input Group */
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .input-group input {
+      width: 100%;
+      padding: 14px 45px 14px 16px;
+      border: none;
+      border-radius: 12px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      font-size: 16px;
+      outline: none;
+      transition: 0.3s ease;
+    }
+    
+    .input-group input::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    
+    .input-group input:focus {
+      background-color: rgba(255, 255, 255, 0.3);
+      box-shadow: 0 0 0 2px #fff;
+    }
+    
+    .input-group i {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 18px;
+    }
+    
+    /* Elemen List */
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+    
+    ul li {
+      background-color: rgba(255, 255, 255, 0.15);
+      padding: 10px 16px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      color: #fff;
+      transition: 0.3s;
+    }
+    
+    ul li:hover {
+      background-color: rgba(255, 255, 255, 0.25);
+    }
+    
+    /* Timer */
+    #timer {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #ffeb3b;
+    }
+    
+    /* Responsif */
+    @media (max-width: 600px) {
+      .container {
+        padding: 30px 20px;
+      }
+    
+      .container h1, 
+      .container h2 {
+        font-size: 20px;
+      }
+    
+      button {
+        font-size: 15px;
+      }
+    }
+    
+    /* Utility */
+    .hidden {
+      display: none;
+    }
+    
+    /* Animasi */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes pop {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+    
+    @keyframes slideIn {
+      0% {
+        opacity: 0;
+        transform: translateY(-40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Semua bagian layar kuis -->
+    <div class="start-screen">
+      <h1><i class="fa-solid fa-lightbulb"></i> Selamat Datang di Kuis JavaScript</h1>
+      <button id="admin-btn"><i class="fa-solid fa-user-shield"></i> Masuk sebagai Admin</button>
+      <button id="peserta-btn"><i class="fa-solid fa-user"></i> Masuk sebagai Peserta</button>
+    </div>
+
+    <div class="waiting-room hidden">
+      <h2><i class="fa-solid fa-clock"></i> Ruang Tunggu Peserta</h2>
+      <p>Menunggu admin memulai kuis...</p>
+      <ul id="participant-list"></ul>
+    </div>
+
+    <div class="admin-screen hidden">
+      <h2><i class="fa-solid fa-gear"></i> Admin - Kontrol Kuis</h2>
+      <button id="start-quiz-btn"><i class="fa-solid fa-play"></i> Mulai Kuis</button>
+      <h3>Peserta Terdaftar:</h3>
+      <ul id="admin-participant-list"></ul>
+    </div>
+
+    <div class="quiz-screen hidden">
+      <h2 id="question-text"><i class="fa-solid fa-circle-question"></i> Pertanyaan Akan Ditampilkan</h2>
+      <ul id="answer-options"></ul>
+      <div id="timer"><i class="fa-solid fa-hourglass-half"></i> Sisa Waktu: <span id="time-remaining">60</span> detik</div>
+      <button id="submit-answer-btn"><i class="fa-solid fa-paper-plane"></i> Kirim Jawaban</button>
+    </div>
+
+    <div class="feedback-screen hidden">
+      <h2 id="feedback-text"></h2>
+      <button id="next-question-btn"><i class="fa-solid fa-forward"></i> Lanjut</button>
+    </div>
+
+    <div class="results-screen hidden">
+      <h2><i class="fa-solid fa-chart-line"></i> Hasil Akhir</h2>
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <script>
+    let participants = [];
+    let currentParticipantIndex = 0;
+    let currentQuestionIndex = 0;
+    let selectedAnswer = null;
+    let timer;
+    let timeRemaining = 60;
+    let adminName = "Admin";
+
+    const questions = [
+  {
+    question: "Apa itu JavaScript?",
+    options: ["Bahasa markup", "Bahasa pemrograman", "Editor teks", "Sistem operasi"],
+    answer: 1 // Jawaban benar: Bahasa pemrograman
+  },
+  {
+    question: "Bagaimana cara mendeklarasikan variabel di JavaScript?",
+    options: ["var", "let", "const", "Semua benar"],
+    answer: 3 // Jawaban benar: Semua benar
+  },
+  {
+    question: "Di mana JavaScript dijalankan?",
+    options: ["Browser", "Node.js", "Deno", "Semua benar"],
+    answer: 3 // Jawaban benar: Semua benar
+  },
+  {
+    question: "Tipe data mana yang bukan termasuk primitive?",
+    options: ["String", "Number", "Object", "Boolean"],
+    answer: 2 // Jawaban benar: Object
+  },
+  {
+    question: "Apa yang dimaksud dengan 'function' dalam JavaScript?",
+    options: ["Sebagai tempat untuk menulis kode", "Sekumpulan perintah yang dijalankan dengan nama", "Jenis tipe data", "Operator dalam JavaScript"],
+    answer: 1 // Jawaban benar: Sekumpulan perintah yang dijalankan dengan nama
+  },
+  {
+    question: "Manakah yang benar untuk mendeklarasikan fungsi dalam JavaScript?",
+    options: ["function myFunction() {}", "func myFunction() {}", "function = myFunction() {}", "myFunction() {}"],
+    answer: 1 // Jawaban benar: function myFunction() {}
+  },
+  {
+    question: "Apa itu callback function?",
+    options: ["Fungsi yang dipanggil setelah event terjadi", "Fungsi yang memanggil fungsi lain", "Fungsi yang dikirim ke fungsi lain sebagai argumen", "Fungsi yang tidak mengembalikan nilai"],
+    answer: 2 // Jawaban benar: Fungsi yang dikirim ke fungsi lain sebagai argumen
+  },
+  {
+    question: "Apa yang dimaksud dengan 'Object' di JavaScript?",
+    options: ["Sebuah tipe data untuk menyimpan pasangan key-value", "Sebuah array yang menyimpan tipe data lainnya", "Fungsi yang mengelola data", "Variabel yang hanya menyimpan angka"],
+    answer: 1 // Jawaban benar: Sebuah tipe data untuk menyimpan pasangan key-value
+  },
+  {
+    question: "Manakah yang benar untuk membuat array di JavaScript?",
+    options: ["let arr = [1, 2, 3];", "let arr = (1, 2, 3);", "let arr = {1, 2, 3};", "let arr = '1, 2, 3';"],
+    answer: 1 // Jawaban benar: let arr = [1, 2, 3];
+  },
+  {
+    question: "Manakah yang bukan termasuk tipe data primitif di JavaScript?",
+    options: ["String", "Boolean", "Object", "Number"],
+    answer: 2 // Jawaban benar: Object
+  },
+  {
+    question: "Untuk melakukan perulangan dari 1 hingga 5 menggunakan 'for', kode yang benar adalah?",
+    options: ["for (let i = 1; i <= 5; i++) {}", "for (let i = 0; i < 5; i++) {}", "for (i = 0; i <= 5; i++) {}", "for (let i = 1; i < 5; i++) {}"],
+    answer: 1 // Jawaban benar: for (let i = 1; i <= 5; i++) {}
+  },
+  {
+    question: "Fungsi 'push()' pada array digunakan untuk?",
+    options: ["Menambahkan elemen ke akhir array", "Menghapus elemen pertama array", "Mengurutkan array", "Membalikkan array"],
+    answer: 1 // Jawaban benar: Menambahkan elemen ke akhir array
+  },
+  {
+    question: "Apa itu 'Map' dalam JavaScript?",
+    options: ["Tipe data untuk menyimpan pasangan key-value dengan tipe key yang bisa beragam", "Tipe data untuk menyimpan daftar yang terurut", "Fungsi untuk memetakan data", "Tipe data untuk menyimpan array"],
+    answer: 1 // Jawaban benar: Tipe data untuk menyimpan pasangan key-value dengan tipe key yang bisa beragam
+  },
+  {
+    question: "Apa yang dimaksud dengan Asynchronous Programming?",
+    options: ["Pemrograman yang berjalan secara serentak", "Pemrograman yang berjalan satu per satu", "Pemrograman yang memungkinkan tugas berjalan tanpa menunggu tugas sebelumnya selesai", "Pemrograman yang menunggu input dari pengguna"],
+    answer: 2 // Jawaban benar: Pemrograman yang memungkinkan tugas berjalan tanpa menunggu tugas sebelumnya selesai
+  },
+  {
+    question: "Apa itu 'Promise' dalam JavaScript?",
+    options: ["Fungsi untuk mengelola error", "Objek yang mewakili nilai yang akan tersedia di masa depan", "Fungsi untuk mengelola array", "Fungsi untuk menangani event"],
+    answer: 1 // Jawaban benar: Objek yang mewakili nilai yang akan tersedia di masa depan
+  },
+  {
+    question: "Manakah yang merupakan cara yang benar untuk menangani error menggunakan try-catch?",
+    options: ["try { ... } catch { ... }", "try() { ... } catch() { ... }", "try { ... } catch(error) { ... }", "try: { ... } catch: { ... }"],
+    answer: 2 // Jawaban benar: try { ... } catch(error) { ... }
+  },
+  {
+    question: "Bagaimana cara mendeklarasikan sebuah variabel konstan di JavaScript?",
+    options: ["let x = 10;", "const x = 10;", "var x = 10;", "constant x = 10;"],
+    answer: 2 // Jawaban benar: const x = 10;
+  },
+  {
+    question: "Apa yang terjadi jika kita mencoba mengakses variabel yang belum dideklarasikan?",
+    options: ["Program error dan berhenti berjalan", "Nilai default undefined", "Variabel akan dideklarasikan secara otomatis", "Program akan berjalan tanpa masalah"],
+    answer: 1 // Jawaban benar: Nilai default undefined
+  },
+  {
+    question: "Apa itu 'Set' dalam JavaScript?",
+    options: ["Tipe data yang menyimpan elemen unik", "Tipe data untuk menyimpan data dalam urutan tertentu", "Fungsi untuk mengelola objek", "Tipe data untuk menyimpan pasangan key-value"],
+    answer: 1 // Jawaban benar: Tipe data yang menyimpan elemen unik
+  },
+  {
+    question: "Untuk menjalankan kode JavaScript di server menggunakan Node.js, kita harus memasang...",
+    options: ["Node.js", "NPM", "Bash", "JQuery"],
+    answer: 1 // Jawaban benar: Node.js
+  },
+  {
+    question: "Bagaimana cara mengakses elemen HTML dengan ID menggunakan JavaScript?",
+    options: ["getElementById()", "querySelector()", "getElementsByTagName()", "querySelectorAll()"],
+    answer: 1 // Jawaban benar: getElementById()
+  },
+  {
+    question: "Apa itu 'async' dalam JavaScript?",
+    options: ["Fungsi yang dijalankan secara otomatis", "Fungsi yang berjalan secara asynchronous", "Fungsi yang menghasilkan error", "Fungsi yang memblokir eksekusi"],
+    answer: 2 // Jawaban benar: Fungsi yang berjalan secara asynchronous
+  },
+  {
+    question: "Untuk menunggu hasil dari promise menggunakan async-await, kita menggunakan...",
+    options: ["await", "then", "done", "callback"],
+    answer: 1 // Jawaban benar: await
+  },
+  {
+    question: "Bagaimana cara menulis komentar satu baris dalam JavaScript?",
+    options: ["// komentar", "/* komentar */", "# komentar", "<!-- komentar -->"],
+    answer: 1 // Jawaban benar: // komentar
+  },
+  {
+    question: "Apa itu 'this' dalam JavaScript?",
+    options: ["Keyword yang merujuk pada objek yang sedang aktif", "Fungsi yang mengembalikan nilai objek", "Array yang digunakan di dalam objek", "Parameter yang digunakan di dalam fungsi"],
+    answer: 1 // Jawaban benar: Keyword yang merujuk pada objek yang sedang aktif
+  },
+  {
+    question: "Bagaimana cara mendeklarasikan array kosong di JavaScript?",
+    options: ["let arr = [];", "let arr = ();", "let arr = {};","let arr = ''"],
+    answer: 1 // Jawaban benar: let arr = [];
+  },
+  {
+    question: "Apa yang dimaksud dengan hoisting dalam JavaScript?",
+    options: ["Proses pengurutan array", "Proses pengangkatan deklarasi variabel dan fungsi ke bagian atas kode", "Proses pengubahan nilai variabel", "Proses penghapusan variabel yang tidak terpakai"],
+    answer: 2 // Jawaban benar: Proses pengangkatan deklarasi variabel dan fungsi ke bagian atas kode
+  }
+];
+
+
+    const startQuizBtn = document.getElementById('start-quiz-btn');
+    const pesertaBtn = document.getElementById('peserta-btn');
+    const adminBtn = document.getElementById('admin-btn');
+    const adminScreen = document.querySelector('.admin-screen');
+    const quizScreen = document.querySelector('.quiz-screen');
+    const feedbackScreen = document.querySelector('.feedback-screen');
+    const resultsScreen = document.querySelector('.results-screen');
+    const waitingRoom = document.querySelector('.waiting-room');
+    const participantList = document.getElementById('participant-list');
+    const adminParticipantList = document.getElementById('admin-participant-list');
+    const timeRemainingDisplay = document.getElementById('time-remaining');
+    const nextQuestionBtn = document.getElementById('next-question-btn');
+    const submitAnswerBtn = document.getElementById('submit-answer-btn');
+
+    adminBtn.addEventListener('click', () => {
+      document.querySelector('.start-screen').classList.add('hidden');
+      adminScreen.classList.remove('hidden');
+    });
+
+    pesertaBtn.addEventListener('click', () => {
+      document.querySelector('.start-screen').classList.add('hidden');
+      waitingRoom.classList.remove('hidden');
+      const participantName = prompt("Masukkan nama peserta:");
+      if (participantName) {
+        participants.push(participantName);
+        updateParticipantList();
+      }
+    });
+
+    startQuizBtn.addEventListener('click', () => {
+      adminScreen.classList.add('hidden');
+      quizScreen.classList.remove('hidden');
+      startTimer();
+    });
+
+    submitAnswerBtn.addEventListener('click', () => {
+      if (selectedAnswer !== null) {
+        showFeedback();
+      }
+    });
+
+    nextQuestionBtn.addEventListener('click', () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showResults();
+      }
+    });
+
+    function startTimer() {
+      timer = setInterval(() => {
+        timeRemaining--;
+        timeRemainingDisplay.textContent = timeRemaining;
+        if (timeRemaining <= 0) {
+          clearInterval(timer);
+          showFeedback();
+        }
+      }, 1000);
+    }
+
+    function showQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      document.getElementById('question-text').textContent = currentQuestion.question;
+      const answerOptions = document.getElementById('answer-options');
+      answerOptions.innerHTML = '';
+      currentQuestion.options.forEach((option, index) => {
+        const li = document.createElement('li');
+        li.textContent = option;
+        li.addEventListener('click', () => {
+          selectedAnswer = index;
+        });
+        answerOptions.appendChild(li);
+      });
+    }
+
+    function showFeedback() {
+      const currentQuestion = questions[currentQuestionIndex];
+      const feedbackText = document.getElementById('feedback-text');
+      if (selectedAnswer === currentQuestion.answer) {
+        feedbackText.textContent = 'Jawaban Anda Benar!';
+      } else {
+        feedbackText.textContent = `Jawaban Anda Salah! Jawaban yang benar adalah: ${currentQuestion.options[currentQuestion.answer]}`;
+      }
+      quizScreen.classList.add('hidden');
+      feedbackScreen.classList.remove('hidden');
+    }
+
+    function showResults() {
+      resultsScreen.classList.remove('hidden');
+      feedbackScreen.classList.add('hidden');
+    }
+
+    function updateParticipantList() {
+      participantList.innerHTML = '';
+      participants.forEach(participant => {
+        const li = document.createElement('li');
+        li.textContent = participant;
+        participantList.appendChild(li);
+      });
+      adminParticipantList.innerHTML = '';
+      participants.forEach(participant => {
+        const li = document.createElement('li');
+        li.textContent = participant;
+        adminParticipantList.appendChild(li);
+      });
+    }
+  </script>
+</body>
+</html>
